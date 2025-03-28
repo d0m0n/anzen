@@ -26,9 +26,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // 他のカタログ関連リソース
-    Route::resource('catalogs', CatalogController::class)->except(['index', 'show', 'create', 'store']);
+    Route::resource('catalogs', CatalogController::class)->except(['index', 'show']);
 });
 
-Route::resource('catalogs', CatalogController::class);
+Route::get('/test-create', function () {
+    return view('catalogs.create');
+});
 
 require __DIR__ . '/auth.php';

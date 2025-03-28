@@ -15,13 +15,14 @@ class CatalogController extends Controller
 
     public function create()
     {
+        \Log::info('Create page accessed'); // デバッグログ
         return view('catalogs.create');
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'provider_id' => 'required|integer',
+            'provider_id' => 'required|integer|exists:users,id', // 外部キー制約を確認
             'status_id' => 'required|integer',
             'county_name' => 'required|string',
             'location_name' => 'required|string',

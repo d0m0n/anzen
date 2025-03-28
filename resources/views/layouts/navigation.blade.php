@@ -126,6 +126,11 @@
         </div>
     </div>
 @endauth
-
+    @guest
+        <!-- ゲスト向けのログインボタン -->
+        <a href="{{ route('login') }}" class="inline-flex items-center px-4 py-2 border text-sm leading-4 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700 focus:outline-none transition ease-in-out duration-150">
+            {{ __('管理者ログイン') }}
+        </a>
+    @endguest
     </div>
 </nav>

@@ -21,6 +21,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'company_name',
+        'location',
+        'phone_number',
+        'fax_number',
+        'url',
+        // 他のフィールド...
     ];
 
     /**

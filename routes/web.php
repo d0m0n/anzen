@@ -10,6 +10,8 @@ Route::get('/', [CatalogController::class, 'index'])->name('catalogs.index');
 // ゲストもアクセス可能なカタログの一覧と詳細
 Route::get('/catalogs', [CatalogController::class, 'index'])->name('catalogs.index');
 Route::get('/catalogs/{catalog}', [CatalogController::class, 'show'])->name('catalogs.show');
+Route::get('/catalogs/provider/{provider_id}', [CatalogController::class, 'filterByProvider'])->name('catalogs.provider');
+Route::get('/catalogs/provider/{provider_id}/list', [CatalogController::class, 'providerCatalogs'])->name('catalogs.provider.list');
 
 // ダッシュボードへのアクセス（認証済みのユーザーのみ）
 Route::get('/dashboard', [CatalogController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -24,6 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::patch('/profile/details', [ProfileController::class, 'updateDetails'])->name('profile.update.details');
+    Route::patch('/profile/update-details', [ProfileController::class, 'updateDetails'])->name('profile.update.details');
 
     // 他のカタログ関連リソース
     Route::resource('catalogs', CatalogController::class)->except(['index', 'show']);

@@ -32,12 +32,22 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div>
+                                <select name="status_id" id="status_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" onchange="document.getElementById('filterForm').submit();">
+                                    <option value="">在留資格を選択</option>
+                                    @foreach ($statuses as $status)
+                                        <option value="{{ $status->id }}" {{ request('status_id') == $status->id ? 'selected' : '' }}>
+                                            {{ $status->residence_status }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </form>
 
                         <div class="flex items-center space-x-2">
-                            <a href="{{ route('catalogs.index', array_merge(request()->except('sort'), ['sort' => 'price_asc'])) }}" class="text-blue-500 hover:text-blue-700">価格の安い順</a>
+                            <a href="{{ route('catalogs.index', array_merge(request()->except('sort'), ['sort' => 'price_asc'])) }}" class="text-blue-500 hover:text-blue-700">費用の安い順</a>
                             <span>|</span>
-                            <a href="{{ route('catalogs.index', array_merge(request()->except('sort'), ['sort' => 'price_desc'])) }}" class="text-blue-500 hover:text-blue-700">価格の高い順</a>
+                            <a href="{{ route('catalogs.index', array_merge(request()->except('sort'), ['sort' => 'price_desc'])) }}" class="text-blue-500 hover:text-blue-700">費用の高い順</a>
                         </div>
 
                         <!-- クリアボタン -->
@@ -45,9 +55,15 @@
                     </div>
                     <!-- フィルタリングフォームとソートリンク終了 -->
 
+                    @if (isset($providerName))
+                        <div class="mb-4 text-lg font-semibold">
+                            {{ $providerName }}が提供するカタログ
+                        </div>
+                    @endif
+
                     @if (isset($catalogs) && $catalogs->isNotEmpty())
                         @foreach ($catalogs as $catalog)
-                            <a href="{{ route('catalogs.show', $catalog) }}" class="block mb-4 p-4 bg-gray-100 dark:bg-gray-200 rounded-lg hover:bg-gray-200">
+                            <div class="block mb-4 p-4 bg-gray-100 dark:bg-gray-200 rounded-lg">
                                 @if ($catalog->country && $catalog->country->alpha2)
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center space-x-2">
@@ -67,15 +83,24 @@
                                             </span>
                                         </div>
                                         <span class="text-sm font-semibold">
-                                            <strong>提供:</strong> {{ $catalog->provider->name ?? '不明' }}
+                                            <strong>提供:</strong> 
+                                            <a href="{{ route('catalogs.provider.list', ['provider_id' => $catalog->provider_id]) }}" class="text-blue-500 hover:text-blue-700">
+                                                {{ $catalog->provider->name ?? '不明' }}
+                                            </a>
                                         </span>
                                     </div>
                                 @endif
                                 <div class="flex items-center justify-between mt-2">
-                                    <p class="text-lg font-bold">{{ $catalog->copy }}</p>
-                                    <p class="text-lg font-bold text-right"><strong>初期費用</strong> {{ number_format($catalog->price) }} 円</p>
+                                    <p class="text-2xl font-bold">{{ $catalog->copy }}</p>
+                                    <div class="flex items-center space-x-4">
+                                        <p class="text-l font-bold"><strong>初期費用</strong></p>
+                                        <p class="text-2xl font-bold">{{ number_format($catalog->price) }} 円</p>
+                                        <a href="{{ route('catalogs.show', $catalog) }}" class="px-6 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-700">
+                                            詳細はこちら
+                                        </a>
+                                    </div>
                                 </div>
-                            </a>
+                            </div>
                         @endforeach
                     @else
                         <p>カタログデータがありません。</p>

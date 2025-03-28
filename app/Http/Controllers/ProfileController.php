@@ -57,4 +57,20 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function updateDetails(Request $request)
+    {
+        $validated = $request->validate([
+            'company_name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'phone_number' => 'nullable|string|max:20',
+            'fax_number' => 'nullable|string|max:20',
+            'url' => 'nullable|url|max:255',
+        ]);
+
+        $user = auth()->user();
+        $user->update($validated);
+
+        return redirect()->back()->with('status', 'profile-updated');
+    }
 }

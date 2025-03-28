@@ -19,7 +19,7 @@
                         <p><strong>Price:</strong> {{ $catalog->price }}</p>
                         <p><strong>Note:</strong> {{ $catalog->note }}</p>
                     </div>
-                    <a href="{{ route('catalogs.index') }}" class="text-blue-500 hover:text-blue-700">戻る</a>
+                    <a href="javascript:history.back()" class="text-blue-500 hover:text-blue-700">戻る</a>
                 </div>
             </div>
         </div>

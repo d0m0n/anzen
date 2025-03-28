@@ -18,7 +18,7 @@
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
-                <a href="/">
+                <a href="{{ url('/') }}">
                     <img src="{{ asset('logomark.svg') }}" alt="Logo" class="block h-20 w-auto fill-current text-gray-800">
                 </a>
             </div>

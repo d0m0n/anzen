@@ -49,26 +49,32 @@
                         @foreach ($catalogs as $catalog)
                             <a href="{{ route('catalogs.show', $catalog) }}" class="block mb-4 p-4 bg-gray-100 dark:bg-gray-200 rounded-lg hover:bg-gray-200">
                                 @if ($catalog->country && $catalog->country->alpha2)
-                                    <div class="flex items-center space-x-2">
-                                        <img src="https://flagcdn.com/w40/{{ strtolower($catalog->country->alpha2) }}.png" alt="{{ $catalog->country->alpha2 }} flag" class="inline-block h-6">
-                                        <span class="px-2 py-1 bg-gray-100 text-sm rounded">
-                                            {{ $catalog->county_name }}
-                                        </span>
-                                        <span class="px-2 py-1 bg-gray-100 text-sm rounded">
-                                            {{ $catalog->location_name }}
-                                        </span>
-                                        <span class="px-2 py-1 text-sm rounded 
-                                            @if ($catalog->status->residence_status == '技能実習') bg-blue-200 
-                                            @elseif ($catalog->status->residence_status == '特定技能') bg-emerald-200 
-                                            @else bg-gray-400 
-                                            @endif">
-                                            {{ $catalog->status->residence_status ?? '不明' }}
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-2">
+                                            <img src="https://flagcdn.com/w40/{{ strtolower($catalog->country->alpha2) }}.png" alt="{{ $catalog->country->alpha2 }} flag" class="inline-block h-6">
+                                            <span class="px-2 py-1 bg-gray-100 text-sm rounded">
+                                                {{ $catalog->county_name }}
+                                            </span>
+                                            <span class="px-2 py-1 bg-gray-100 text-sm rounded">
+                                                {{ $catalog->location_name }}
+                                            </span>
+                                            <span class="px-2 py-1 text-sm rounded 
+                                                @if ($catalog->status->residence_status == '技能実習') bg-blue-200 
+                                                @elseif ($catalog->status->residence_status == '特定技能') bg-emerald-200 
+                                                @else bg-gray-400 
+                                                @endif">
+                                                {{ $catalog->status->residence_status ?? '不明' }}
+                                            </span>
+                                        </div>
+                                        <span class="text-sm font-semibold">
+                                            <strong>提供:</strong> {{ $catalog->provider->name ?? '不明' }}
                                         </span>
                                     </div>
                                 @endif
-                                <p><strong>Provider Name:</strong> {{ $catalog->provider->name ?? '不明' }}</p>
-                                <p><strong>Copy:</strong> {{ $catalog->copy }}</p>
-                                <p><strong>Price:</strong> {{ number_format($catalog->price) }} 円</p>
+                                <div class="flex items-center justify-between mt-2">
+                                    <p class="text-lg font-bold">{{ $catalog->copy }}</p>
+                                    <p class="text-lg font-bold text-right"><strong>初期費用</strong> {{ number_format($catalog->price) }} 円</p>
+                                </div>
                             </a>
                         @endforeach
                     @else

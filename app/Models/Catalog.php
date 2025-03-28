@@ -31,4 +31,9 @@ class Catalog extends Model
     {
         return $this->belongsTo(Status::class);
     }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'county_name', 'country_name_jp');
+    }
 }

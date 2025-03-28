@@ -26,4 +26,9 @@ class Catalog extends Model
     {
         return $this->belongsTo(User::class, 'provider_id');
     }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
 }

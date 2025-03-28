@@ -7,15 +7,44 @@ use Illuminate\Http\Request;
 
 class CatalogController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $catalogs = Catalog::with('user')->latest()->get();
-        return view('catalogs.index', compact('catalogs'));
+        // フィルタリング用のリストを生成
+        $countries = Catalog::select('county_name')->distinct()->pluck('county_name');
+        $locations = Catalog::select('location_name')->distinct()->pluck('location_name');
+
+        // クエリビルダーでフィルタリング
+        $query = Catalog::query();
+
+        if ($request->filled('country_name')) {
+            $query->where('county_name', $request->country_name);
+        }
+
+        if ($request->filled('location_name')) {
+            $query->where('location_name', $request->location_name);
+        }
+
+        // ソート処理
+        if ($request->filled('sort')) {
+            if ($request->sort === 'price_asc') {
+                $query->orderBy('price', 'asc');
+            } elseif ($request->sort === 'price_desc') {
+                $query->orderBy('price', 'desc');
+            }
+        }
+
+        $catalogs = $query->get();
+
+        // ビューにデータを渡す
+        return view('catalogs.index', [
+            'catalogs' => $catalogs,
+            'countries' => $countries,
+            'locations' => $locations,
+        ]);
     }
 
     public function create()
     {
-        \Log::info('Create page accessed'); // デバッグログ
         return view('catalogs.create');
     }
 

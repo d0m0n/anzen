@@ -19,7 +19,7 @@
                         @foreach ($catalogs as $catalog)
                             <div class="mb-4 p-4 bg-gray-100 dark:bg-gray-200 rounded-lg">
                                 <p><strong>Provider Name:</strong> {{ $catalog->provider->name ?? '不明' }}</p>
-                                <p><strong>Status ID:</strong> {{ $catalog->status_id }}</p>
+                                <p><strong>Residence Status:</strong> {{ $catalog->status->residence_status ?? '不明' }}</p>
                                 <p><strong>County Name:</strong> {{ $catalog->county_name }}</p>
                                 <p><strong>Location Name:</strong> {{ $catalog->location_name }}</p>
                                 <p><strong>Copy:</strong> {{ $catalog->copy }}</p>

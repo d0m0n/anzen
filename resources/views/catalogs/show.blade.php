@@ -9,9 +9,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <div class="mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                    <div class="mb-4 p-4 bg-gray-100 dark:bg-gray-200 rounded-lg">
                         <p><strong>Provider Name:</strong> {{ $catalog->provider->name }}</p>
-                        <p><strong>Status ID:</strong> {{ $catalog->status_id }}</p>
+                        <p><strong>Residence Status:</strong> {{ $catalog->status->residence_status ?? '不明' }}</p>
                         <p><strong>County Name:</strong> {{ $catalog->county_name }}</p>
                         <p><strong>Location Name:</strong> {{ $catalog->location_name }}</p>
                         <p><strong>Copy:</strong> {{ $catalog->copy }}</p>

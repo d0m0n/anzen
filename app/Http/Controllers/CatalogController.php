@@ -73,9 +73,18 @@ class CatalogController extends Controller
         return redirect()->route('dashboard')->with('success', '新しいカタログが作成されました！');
     }
 
-    public function show(Catalog $catalog)
+    public function show($id)
     {
-        return view('catalogs.show', compact('catalog'));
+        $catalog = Catalog::with(['provider', 'status'])->findOrFail($id);
+
+        // 必要なデータを取得
+        $company_name = $catalog->provider->company_name ?? '不明';
+        $location = $catalog->provider->location ?? '不明';
+        $phone_number = $catalog->provider->phone_number ?? '不明';
+        $fax_number = $catalog->provider->fax_number ?? '不明';
+
+        // ビューにデータを渡す
+        return view('catalogs.show', compact('catalog', 'company_name', 'location', 'phone_number', 'fax_number'));
     }
 
     public function dashboard()

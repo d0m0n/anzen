@@ -3,6 +3,7 @@
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 
 // カタログの一覧（トップページ）
 Route::get('/', [CatalogController::class, 'index'])->name('catalogs.index');
@@ -14,7 +15,7 @@ Route::get('/catalogs/provider/{provider_id}', [CatalogController::class, 'filte
 Route::get('/catalogs/provider/{provider_id}/list', [CatalogController::class, 'providerCatalogs'])->name('catalogs.provider.list');
 
 // ダッシュボードへのアクセス（認証済みのユーザーのみ）
-Route::get('/dashboard', [CatalogController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 // 認証が必要なルートのグループ化
 Route::middleware('auth')->group(function () {
@@ -31,10 +32,14 @@ Route::middleware('auth')->group(function () {
 
     // 他のカタログ関連リソース
     Route::resource('catalogs', CatalogController::class)->except(['index', 'show']);
+    Route::get('/catalogs/{catalog}/edit', [CatalogController::class, 'edit'])->name('catalogs.edit');
+    Route::put('/catalogs/{catalog}', [CatalogController::class, 'update'])->name('catalogs.update');
+    Route::delete('/catalogs/{provider_id}', [CatalogController::class, 'destroy'])->name('catalogs.destroy');
 });
 
-Route::get('/test-create', function () {
-    return view('catalogs.create');
-});
+// 不要なテストルートを削除
+// Route::get('/test-create', function () {
+//     return view('catalogs.create');
+// });
 
 require __DIR__ . '/auth.php';

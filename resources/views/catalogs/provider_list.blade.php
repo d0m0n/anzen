@@ -13,10 +13,15 @@
                     <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-100 rounded-lg">
                         <p class="text-lg font-semibold"> {{ $company_name }}</p>
                         <p class="text-sm">所在地: {{ $location }}</p>
-                        <p class="text-sm">電話番号: {{ $phone_number }}</p>
+                        <p class="text-sm">電話番号: 
+                            <a href="tel:{{ $phone_number }}" class="text-blue-500 hover:text-blue-700">{{ $phone_number }}</a>
+                        </p>
                         <p class="text-sm">FAX番号: {{ $fax_number }}</p>
+                        <p class="text-sm">ホームページ:
+                                <a href="{{ $url }}" target="_blank" class="text-blue-500 hover:text-blue-700">{{ $url }}</a>
+                        </p>
                     </div>
-                    <!-- ここまで追加 -->
+                    <!-- カタログ一覧 -->
 
                     @if (isset($providerName))
                         <div class="mb-4 text-lg font-semibold">

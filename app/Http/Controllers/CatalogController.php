@@ -58,19 +58,23 @@ class CatalogController extends Controller
 
     public function store(Request $request)
     {
+        // バリデーション
         $validated = $request->validate([
-            'provider_id' => 'required|integer|exists:users,id', // 外部キー制約を確認
+            'provider_id' => 'required|integer',
             'status_id' => 'required|integer',
-            'county_name' => 'required|string',
-            'location_name' => 'required|string',
+            'county_name' => 'required|string|max:255',
+            'location_name' => 'required|string|max:255',
             'copy' => 'required|string',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'note' => 'nullable|string',
         ]);
 
+        // データ保存
         Catalog::create($validated);
-        return redirect()->route('dashboard')->with('success', '新しいカタログが作成されました！');
+
+        // リダイレクト
+        return redirect()->route('catalogs.index')->with('success', 'カタログが作成されました。');
     }
 
     public function show($id)
@@ -82,9 +86,10 @@ class CatalogController extends Controller
         $location = $catalog->provider->location ?? '不明';
         $phone_number = $catalog->provider->phone_number ?? '不明';
         $fax_number = $catalog->provider->fax_number ?? '不明';
+        $url = $catalog->provider->url ?? '不明';
 
         // ビューにデータを渡す
-        return view('catalogs.show', compact('catalog', 'company_name', 'location', 'phone_number', 'fax_number'));
+        return view('catalogs.show', compact('catalog', 'company_name', 'location', 'phone_number', 'fax_number', 'url'));
     }
 
     public function dashboard()
@@ -117,9 +122,15 @@ class CatalogController extends Controller
         $location = $provider->location ?? '不明';
         $phone_number = $provider->phone_number ?? '不明';
         $fax_number = $provider->fax_number ?? '不明';
+        $url = $provider->url ?? '不明';
 
         // カタログ情報を取得
-        $catalogs = Catalog::where('provider_id', $provider_id)->get();
+        $catalogs = Catalog::where('provider_id', $provider_id)->with('user')->get();
+
+        // カタログに関連するユーザーのURLを取得
+        $userUrls = $catalogs->map(function ($catalog) {
+            return $catalog->user->url ?? '不明';
+        });
 
         // ビューにデータを渡す
         return view('catalogs.provider_list', [
@@ -129,6 +140,8 @@ class CatalogController extends Controller
             'location' => $location,
             'phone_number' => $phone_number,
             'fax_number' => $fax_number,
+            'url' => $url,
+            'userUrls' => $userUrls, // ユーザーのURLリストを渡す
         ]);
     }
 
@@ -150,5 +163,57 @@ class CatalogController extends Controller
             'phone_number' => $phone_number,
             'fax_number' => $fax_number,
         ]);
+    }
+
+    public function showProviderList($providerId)
+    {
+        $provider = Provider::findOrFail($providerId);
+        $catalogs = $provider->catalogs;
+        $url = $provider->homepage_url; // プロバイダーのホームページURLを取得
+
+        return view('catalogs.provider_list', [
+            'providerName' => $provider->name,
+            'company_name' => $provider->company_name,
+            'location' => $provider->location,
+            'phone_number' => $provider->phone_number,
+            'fax_number' => $provider->fax_number,
+            'url' => $url, // ここで渡す
+            'catalogs' => $catalogs,
+        ]);
+    }
+
+    public function edit(Catalog $catalog)
+    {
+        return view('catalogs.edit', compact('catalog'));
+    }
+
+    public function update(Request $request, Catalog $catalog)
+    {
+        $validated = $request->validate([
+            'provider_id' => 'required|integer',
+            'status_id' => 'required|integer',
+            'county_name' => 'required|string|max:255',
+            'location_name' => 'required|string|max:255',
+            'copy' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric',
+            'note' => 'nullable|string',
+        ]);
+
+        $catalog->update($validated);
+
+        return redirect()->route('dashboard')->with('success', 'Catalog updated successfully.');
+    }
+
+    public function destroy($provider_id)
+    {
+        $catalog = Catalog::where('provider_id', $provider_id)->first();
+
+        if ($catalog) {
+            $catalog->delete();
+            return redirect()->route('catalogs.index')->with('success', 'カタログが削除されました。');
+        }
+
+        return redirect()->route('catalogs.index')->with('error', 'カタログが見つかりませんでした。');
     }
 }

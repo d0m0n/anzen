@@ -184,7 +184,8 @@ class CatalogController extends Controller
 
     public function edit(Catalog $catalog)
     {
-        return view('catalogs.edit', compact('catalog'));
+        $statuses = Status::all(); // Statusモデルから全ての在留資格を取得
+        return view('catalogs.edit', compact('catalog', 'statuses'));
     }
 
     public function update(Request $request, Catalog $catalog)

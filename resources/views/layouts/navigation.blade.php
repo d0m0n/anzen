@@ -15,12 +15,12 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @guest
                         <x-nav-link :href="route('catalogs.index')" :active="request()->routeIs('catalogs.index')">
-                        {{ __('カタログ一覧') }}
+                        {{ __('外国人材を探す') }}
                         </x-nav-link>
                     @endguest
                     @auth
                         <x-nav-link :href="route('catalogs.index')" :active="request()->routeIs('catalogs.index')">
-                        {{ __('カタログ一覧') }}
+                        {{ __('外国人材を探す') }}
                         </x-nav-link>
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('管理画面') }}
@@ -86,13 +86,13 @@
         <div class="pt-2 pb-3 space-y-1">
     @guest
         <x-nav-link :href="route('catalogs.index')" :active="request()->routeIs('catalogs.index')">
-                        {{ __('カタログ一覧') }}
+                        {{ __('外国人材を探す') }}
                         </x-nav-link>
     @endguest
 
     @auth
         <x-nav-link :href="route('catalogs.index')" :active="request()->routeIs('catalogs.index')">
-                        {{ __('カタログ一覧') }}
+                        {{ __('外国人材を探す') }}
                         </x-nav-link>
         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
             {{ __('管理画面') }}

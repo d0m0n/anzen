@@ -6,7 +6,7 @@
     </x-slot>
 
 
-        <div class="max-w-4xl mx-auto pb-2 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto pb-2 sm:px-6 lg:px-8">
             <!-- フィルタリングフォームとソートリンク -->
                     <div class="flex items-center space-x-4 mb-4">
                         <form method="GET" action="{{ route('catalogs.index') }}" id="filterForm" class="flex items-center space-x-4">
@@ -84,7 +84,7 @@
                                     </div>
                                 @endif
                                 <div class="flex items-center justify-between text-gray-700 mt-2">
-                                    <a href="{{ route('catalogs.show', $catalog) }}" class="text-2xl hover:text-emerald-500 font-bold">{{ $catalog->copy }}</a>
+                                    <a href="{{ route('catalogs.show', $catalog) }}" class="text-2xl hover:text-blue-700 font-bold">{{ $catalog->copy }}</a>
                                     <div class="flex items-center space-x-4">
                                         <p class="text-l font-bold"><strong>初期費用</strong></p>
                                         <p class="text-2xl font-bold">{{ number_format($catalog->price) }} 円</p>
